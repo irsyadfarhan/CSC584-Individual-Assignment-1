@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Personal Profile Form</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0; min-height: 100vh; padding: 40px 16px;
+            font-family: "Plus Jakarta Sans", "Segoe UI", Roboto, Arial, sans-serif;
+            background: #f2f2f2; color: #14141a;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .shell {
+            width: 100%; max-width: 500px; background: #ffffff;
+            border-radius: 30px; box-shadow: 0 24px 60px rgba(0,0,0,.09), 0 2px 6px rgba(0,0,0,.04);
+            overflow: hidden;
+        }
+
+        /* ---------- LEFT: form ---------- */
+        .form-side { padding: 44px 44px 40px; }
+        .logo-star { font-size: 20px; line-height: 1; color: #14141a; }
+        .logo {
+            width: 38px; height: 38px; border: 2px solid #14141a; border-radius: 4px;
+            display: flex; align-items: center; justify-content: center; margin: 0 auto 18px;
+        }
+        h1 { margin: 0; text-align: center; font-size: 2rem; font-weight: 800; letter-spacing: -.03em; }
+        .sub { text-align: center; color: #6f7378; font-size: .88rem; margin: 6px 0 20px; }
+
+        .progress { height: 6px; background: #f4f4f4; border-radius: 99px; overflow: hidden; }
+        .progress span { display: block; height: 100%; width: 0; background: #9dff2f; border-radius: 99px; transition: width .35s; }
+        .progress-text { font-size: .74rem; color: #6f7378; text-align: right; margin: 4px 0 2px; }
+
+        label { display: block; margin: 14px 0 6px; font-weight: 700; font-size: .82rem; letter-spacing: .01em; }
+        label small { font-weight: 500; color: #6f7378; }
+        input[type="text"], input[type="email"], textarea, .chips {
+            width: 100%; padding: 13px 15px; font: inherit; font-size: .92rem; font-weight: 500; color: #14141a;
+            background: #f7f7f8; border: 1.5px solid #cfd2d7; border-radius: 12px;
+            transition: border-color .2s, background .2s, box-shadow .2s;
+        }
+        input::placeholder, textarea::placeholder { color: #8a8f96; font-weight: 400; }
+        input:hover, textarea:hover, .chips:hover { border-color: #9aa0a8; }
+        input:focus, textarea:focus, .chips:focus-within {
+            outline: none; background: #fff; border-color: #14141a; box-shadow: 0 4px 14px rgba(0,0,0,.06);
+        }
+        textarea { height: 104px; resize: vertical; }
+        .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .error { color: #d92d20; font-size: .76rem; margin-top: 5px; font-weight: 500; }
+        .error:empty { display: none; }
+        .invalid { border-color: #d92d20 !important; background: #fff6f5 !important; }
+        .counter { text-align: right; font-size: .74rem; color: #6f7378; margin-top: 3px; }
+
+        .chips { display: flex; flex-wrap: wrap; gap: 6px; padding: 8px 10px; cursor: text; }
+        .chip {
+            background: #fff; border: 1px solid #e8e8e8; box-shadow: 0 6px 16px rgba(0,0,0,.07);
+            padding: 4px 6px 4px 11px; border-radius: 99px; font-size: .8rem; font-weight: 600;
+            display: inline-flex; align-items: center; gap: 2px;
+        }
+        .chip button { border: none; background: none; color: #6f7378; cursor: pointer; font-size: 1rem; line-height: 1; padding: 0 4px; }
+        .chip button:hover { color: #14141a; }
+        .chips input { flex: 1; min-width: 110px; border: none; background: transparent; padding: 5px 4px; box-shadow: none !important; }
+        .quick { margin-top: 8px; font-size: .76rem; color: #6f7378; }
+        .quick button {
+            border: 1px solid #e8e8e8; background: #fff; color: #14141a; font: inherit; font-size: .74rem; font-weight: 600;
+            border-radius: 99px; padding: 3px 11px; margin: 3px 3px 0 0; cursor: pointer; box-shadow: 0 6px 16px rgba(0,0,0,.07); transition: transform .15s;
+        }
+        .quick button:hover { transform: translateY(-1px); }
+
+        .btn {
+            width: 100%; padding: 14px; font: inherit; font-weight: 800; font-size: .95rem; color: #14141a;
+            border: none; border-radius: 12px; cursor: pointer; transition: transform .15s, box-shadow .2s, background .2s;
+        }
+        .btn-lime { background: #9dff2f; box-shadow: 0 8px 20px rgba(157,255,47,.5), 0 2px 4px rgba(0,0,0,.08); }
+        .btn-lime:hover { background: #8aeb1a; transform: translateY(-2px); box-shadow: 0 12px 26px rgba(157,255,47,.55), 0 2px 4px rgba(0,0,0,.08); }
+        .btn-lime:active { transform: translateY(0); }
+        .actions { margin-top: 22px; }
+        .clear-link {
+            display: block; margin: 16px auto 0; background: none; border: none; font: inherit; font-size: .8rem; font-weight: 600;
+            color: #14141a; border-bottom: 1px solid #14141a; padding: 0 0 1px; cursor: pointer; width: auto;
+        }
+
+
+        @media (max-width: 560px) { .form-side { padding: 32px 22px 28px; } }
+        @media (max-width: 480px) { .row2 { grid-template-columns: 1fr; gap: 0; } }
+    </style>
+</head>
+<body>
+
+<div class="shell">
+
+    <!-- LEFT: FORM (data is sent to ProfileServlet using POST) -->
+    <section class="form-side">
+        <div class="logo">
+            <span class="logo-star">&#10022;</span>
+        </div>
+        <h1>Your Profile</h1>
+        <p class="sub">Fill in your details, then press Submit to view your profile</p>
+
+        <div class="progress"><span id="bar"></span></div>
+        <div class="progress-text" id="barText">0% completed</div>
+
+        <form action="ProfileServlet" method="post" id="profileForm" accept-charset="UTF-8" novalidate>
+
+            <label for="name">Full Name</label>
+            <input type="text" id="name" name="name" pattern="[A-Za-z ]+" title="Letters and spaces only" maxlength="80" autocomplete="name" required>
+            <div class="error" id="err-name"></div>
+
+            <div class="row2">
+                <div>
+                    <label for="studentId">Student ID</label>
+                    <input type="text" id="studentId" name="studentId" pattern="[0-9]{8,12}" title="Numbers only (8-12 digits)" inputmode="numeric" maxlength="12" required>
+                    <div class="error" id="err-studentId"></div>
+                </div>
+                <div>
+                    <label for="programme">Programme</label>
+                    <input type="text" id="programme" name="programme" list="programmeList" placeholder="e.g. CS230" maxlength="80" required>
+                    <datalist id="programmeList">
+                        <option value="CS110 - Diploma in Computer Science">
+                        <option value="CS230 - Diploma in Computer Science">
+                        <option value="CS241 - Bachelor of Computer Science (Hons.)">
+                        <option value="CS143 - Bachelor of Information Systems">
+                        <option value="CS255 - Bachelor of Computer Science (Hons.) Netcentric">
+                    </datalist>
+                    <div class="error" id="err-programme"></div>
+                </div>
+            </div>
+
+            <label for="email">Email Address <small>(any email you use)</small></label>
+            <input type="email" id="email" name="email" placeholder="name@example.com" autocomplete="email" required>
+            <div class="error" id="err-email"></div>
+
+            <label>Hobbies <small>(press Enter or comma to add)</small></label>
+            <div class="chips" id="chips">
+                <input type="text" id="hobbyInput" placeholder="Add a hobby..." maxlength="30" autocomplete="off">
+            </div>
+            <div class="quick">Quick add:
+                <button type="button" data-h="Reading">Reading</button>
+                <button type="button" data-h="Gaming">Gaming</button>
+                <button type="button" data-h="Coding">Coding</button>
+                <button type="button" data-h="Sports">Sports</button>
+                <button type="button" data-h="Music">Music</button>
+                <button type="button" data-h="Travelling">Travelling</button>
+            </div>
+            <div class="error" id="err-hobbies"></div>
+            <!-- the servlet still receives a normal "hobbies" text value, e.g. "Reading, Gaming" -->
+            <input type="hidden" id="hobbies" name="hobbies">
+
+            <label for="introduction">Short Self-Introduction</label>
+            <textarea id="introduction" name="introduction" maxlength="300" placeholder="Tell us a little about yourself..." required></textarea>
+            <div class="counter"><span id="count">0</span> / 300</div>
+            <div class="error" id="err-introduction"></div>
+
+            <div class="actions">
+                <button type="submit" class="btn btn-lime">Submit Profile</button>
+                <button type="button" class="clear-link" id="clearBtn">Clear all fields</button>
+            </div>
+        </form>
+    </section>
+
+</div>
+
+<script>
+(function () {
+    var $ = function (id) { return document.getElementById(id); };
+    var form = $('profileForm');
+    var hobbies = [];
+
+    /* ---------- Hobby chips ---------- */
+    function renderChips() {
+        var box = $('chips'), input = $('hobbyInput');
+        Array.prototype.slice.call(box.querySelectorAll('.chip')).forEach(function (c) { box.removeChild(c); });
+        hobbies.forEach(function (h, i) {
+            var chip = document.createElement('span');
+            chip.className = 'chip';
+            chip.appendChild(document.createTextNode(h));
+            var x = document.createElement('button');
+            x.type = 'button'; x.setAttribute('aria-label', 'Remove ' + h); x.innerHTML = '&times;';
+            x.addEventListener('click', function () { hobbies.splice(i, 1); renderChips(); });
+            chip.appendChild(x);
+            box.insertBefore(chip, input);
+        });
+        $('hobbies').value = hobbies.join(', ');
+        clearError('hobbies');
+        update();
+    }
+    function addHobby(text) {
+        text = text.replace(/,/g, '').trim();
+        if (!text) return;
+        var exists = hobbies.some(function (h) { return h.toLowerCase() === text.toLowerCase(); });
+        if (!exists && hobbies.length < 10) hobbies.push(text);
+        $('hobbyInput').value = '';
+        renderChips();
+    }
+    $('chips').addEventListener('click', function () { $('hobbyInput').focus(); });
+    $('hobbyInput').addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ',') { e.preventDefault(); addHobby(this.value); }
+        else if (e.key === 'Backspace' && !this.value && hobbies.length) { hobbies.pop(); renderChips(); }
+    });
+    $('hobbyInput').addEventListener('blur', function () { addHobby(this.value); });
+    Array.prototype.forEach.call(document.querySelectorAll('.quick button'), function (b) {
+        b.addEventListener('click', function () { addHobby(b.getAttribute('data-h')); });
+    });
+
+    /* ---------- Progress + counter ---------- */
+    function update() {
+        var name = $('name').value.trim();
+        $('count').textContent = $('introduction').value.length;
+
+        var done = 0;
+        if (name) done++;
+        if ($('studentId').value.trim()) done++;
+        if ($('programme').value.trim()) done++;
+        if ($('email').value.trim()) done++;
+        if (hobbies.length) done++;
+        if ($('introduction').value.trim()) done++;
+        var pct = Math.round(done / 6 * 100);
+        $('bar').style.width = pct + '%';
+        $('barText').textContent = pct + '% completed';
+    }
+    ['name', 'studentId', 'programme', 'email', 'introduction'].forEach(function (id) {
+        $(id).addEventListener('input', function () { clearError(id); update(); });
+    });
+
+    /* ---------- Block invalid characters while typing ---------- */
+    $('name').addEventListener('input', function () {
+        // letters and spaces only (no numbers / symbols)
+        var cleaned = this.value.replace(/[^A-Za-z ]/g, '').replace(/ {2,}/g, ' ');
+        if (cleaned !== this.value) this.value = cleaned;
+    });
+    $('studentId').addEventListener('input', function () {
+        // numbers only (no letters / symbols)
+        var cleaned = this.value.replace(/[^0-9]/g, '');
+        if (cleaned !== this.value) this.value = cleaned;
+    });
+
+    /* ---------- Validation ---------- */
+    function showError(id, msg) {
+        var el = $(id); if (el) el.classList.add('invalid');
+        $('err-' + id).textContent = msg;
+    }
+    function clearError(id) {
+        var el = $(id); if (el) el.classList.remove('invalid');
+        $('err-' + id).textContent = '';
+    }
+    function validate() {
+        var ok = true, first = null;
+        function fail(id, msg) { showError(id, msg); ok = false; if (!first) first = $(id === 'hobbies' ? 'hobbyInput' : id); }
+        ['name', 'studentId', 'programme', 'email', 'hobbies', 'introduction'].forEach(clearError);
+
+        if (!/^[A-Za-z]+( [A-Za-z]+)*$/.test($('name').value.trim()) || $('name').value.trim().length < 3) fail('name', 'Name must contain letters and spaces only (at least 3 letters).');
+        if (!/^[0-9]{8,12}$/.test($('studentId').value.trim())) fail('studentId', 'Student ID must be numbers only (8-12 digits).');
+        if (!$('programme').value.trim()) fail('programme', 'Please enter your programme.');
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test($('email').value.trim())) fail('email', 'Please enter a valid email address.');
+        if (!hobbies.length) fail('hobbies', 'Add at least one hobby.');
+        if ($('introduction').value.trim().length < 10) fail('introduction', 'Write at least 10 characters about yourself.');
+        if (first) first.focus();
+        return ok;
+    }
+    form.addEventListener('submit', function (e) {
+        addHobby($('hobbyInput').value);
+        if (!validate()) e.preventDefault();
+    });
+
+    /* ---------- Clear ---------- */
+    $('clearBtn').addEventListener('click', function () {
+        if (!confirm('Clear all fields?')) return;
+        form.reset(); hobbies = [];
+        ['name', 'studentId', 'programme', 'email', 'hobbies', 'introduction'].forEach(clearError);
+        renderChips();
+    });
+
+    update();
+})();
+</script>
+</body>
+</html>
